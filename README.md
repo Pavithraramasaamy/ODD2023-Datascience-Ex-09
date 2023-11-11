@@ -17,255 +17,135 @@ Apply Feature generation and selection techniques to all the features of the dat
 Apply data visualization techniques to identify the patterns of the data.
 
 
-# CODE
-```
- DEVELOPED BY : PAVITHRA R
- REG NO : 212222230106
+# CODE:
 
-```
+## DEVELOPED BY : PAVITHRA R
 
-```
-## Loading the dataset :
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-df=pd.read_csv("/content/Superstore (3).csv",encoding='unicode_escape')
-df
-
-## Removing unnecessary data variables :
-df.drop('Row ID',axis=1,inplace=True)
-df.drop('Order ID',axis=1,inplace=True)
-df.drop('Customer ID',axis=1,inplace=True)
-df.drop('Customer Name',axis=1,inplace=True)
-df.drop('Country',axis=1,inplace=True)
-df.drop('Postal Code',axis=1,inplace=True)
-df.drop('Product ID',axis=1,inplace=True)
-df.drop('Product Name',axis=1,inplace=True)
-df.drop('Order Date',axis=1,inplace=True)
-df.drop('Ship Date',axis=1,inplace=True)
-print("Updated dataset")
-df
-
-df.isnull().sum()
-Detecting and removing outliers in current numeric data :
-plt.figure(figsize=(12,10))
-plt.title("Data with outliers")
-df.boxplot()
-plt.show()
-
-plt.figure(figsize=(12,10))
-cols = ['Sales','Quantity','Discount','Profit']
-Q1 = df[cols].quantile(0.25)
-Q3 = df[cols].quantile(0.75)
-IQR = Q3 - Q1
-df = df[~((df[cols] < (Q1 - 1.5 * IQR)) |(df[cols] > (Q3 + 1.5 * IQR))).any(axis=1)]
-plt.title("Dataset after removing outliers")
-df.boxplot()
-plt.show()
-
-##data visualization :
-line plots :
+## REG NO : 212222230106
+ ```
 import seaborn as sns
-sns.lineplot(x="Sub-Category",y="Sales",data=df,marker='o')
-plt.title("Sub Categories vs Sales")
-plt.xticks(rotation = 90)
+import matplotlib.pyplot as plt
+tips=sns.load_dataset('tips')
+tips
+
+tips.head()
+
+tips.info()
+```
+## Which day of the week has the highest total bill amount?
+```
+sns.barplot(x='day',y='total_bill',data=tips)
+plt.title("Weekly highest total bill amount")
+```
+## What is the average tip amount given by smokers and non-smokers?
+```
+sns.barplot(x='smoker',y='tip',data=tips, palette='rainbow')
+plt.title("Average tip amount given by smokers and non-smokers")
+```
+## How does the tip percentage vary based on the size of the dining party?
+```
+sns.boxplot(x='size', y='tip',data=tips)
+plt.title("Tip percentage based on the sizes of the dining party")
+```
+## Which gender tends to leave higher tips?
+```
+sns.boxplot(x='sex', y='tip',data=tips)
+plt.title("Higher tips based on gender")
+```
+## Is there any relationship between the total bill amount and the day of the week?
+```
+plt.plot(tips['day'],tips['total_bill'])
+plt.title("Relationship between the total bill amount and the day of the week")
 plt.show()
-
-sns.lineplot(x="Category",y="Profit",data=df,marker='o')
-plt.xticks(rotation = 90)
-plt.title("Categories vs Profit")
-plt.show()
-
-sns.lineplot(x="Region",y="Sales",data=df,marker='o')
-plt.xticks(rotation = 90)
-plt.title("Region area vs Sales")
-plt.show()
-
-sns.lineplot(x="Category",y="Discount",data=df,marker='o')
-plt.title("Categories vs Discount")
-plt.show()
-
-sns.lineplot(x="Sub-Category",y="Quantity",data=df,marker='o')
-plt.xticks(rotation = 90)
-plt.title("Sub Categories vs Quantity")
-plt.show()
-
-#bar plots
-sns.barplot(x="Sub-Category",y="Sales",data=df)
-plt.title("Sub Categories vs Sales")
-plt.xticks(rotation = 90)
-plt.show()
-
-sns.barplot(x="Category",y="Profit",data=df)
-plt.title("Categories vs Profit")
-plt.show()
-
-sns.barplot(x="Sub-Category",y="Quantity",data=df)
-plt.title("Sub Categories vs Quantity")
-plt.xticks(rotation = 90)
-plt.show()
-
-sns.barplot(x="Category",y="Discount",data=df)
-plt.title("Categories vs Discount")
-plt.show()
-
-plt.figure(figsize=(12,7))
-sns.barplot(x="State",y="Sales",data=df)
-plt.title("States vs Sales")
-plt.xticks(rotation = 90)
-plt.show()
-
-plt.figure(figsize=(25,8))
-sns.barplot(x="State",y="Sales",hue="Region",data=df)
-plt.title("State vs Sales based on Region")
-plt.xticks(rotation = 90)
-plt.show()
-
-## Histogram :
-
-sns.histplot(data = df,x = 'Region',hue='Ship Mode')
-sns.histplot(data = df,x = 'Category',hue='Quantity')
-sns.histplot(data = df,x = 'Sub-Category',hue='Category')
-plt.xticks(rotation = 90)
-plt.show()
-
-sns.histplot(data = df,x = 'Quantity',hue='Segment')
-plt.hist(data = df,x = 'Profit')
-plt.show()
-
-
-## count plot :
-
-plt.figure(figsize=(10,7))
-sns.countplot(x ='Segment', data = df,hue = 'Sub-Category')
-sns.countplot(x ='Region', data = df,hue = 'Segment')
-sns.countplot(x ='Category', data = df,hue='Discount')
-sns.countplot(x ='Ship Mode', data = df,hue = 'Quantity')
-
-## Barplot :
-
-sns.boxplot(x="Sub-Category",y="Discount",data=df)
-plt.xticks(rotation = 90)
-plt.show()
-
-sns.boxplot( x="Profit", y="Category",data=df)
-plt.xticks(rotation = 90)
-plt.show()
-
-plt.figure(figsize=(10,7))
-sns.boxplot(x="Sub-Category",y="Sales",data=df)
-plt.xticks(rotation = 90)
-plt.show()
-
-sns.boxplot(x="Category",y="Profit",data=df)
-sns.boxplot(x="Region",y="Sales",data=df)
-plt.figure(figsize=(10,7))
-sns.boxplot(x="Sub-Category",y="Quantity",data=df)
-plt.xticks(rotation = 90)
-plt.show()
-
-sns.boxplot(x="Category",y="Discount",data=df)
-plt.figure(figsize=(15,7))
-sns.boxplot(x="State",y="Sales",data=df)
-plt.xticks(rotation = 90)
-plt.show()
-
-KDE plot :
-sns.kdeplot(x="Profit", data = df,hue='Category')
-sns.kdeplot(x="Sales", data = df,hue='Region')
-sns.kdeplot(x="Quantity", data = df,hue='Segment')
-sns.kdeplot(x="Discount", data = df,hue='Segment')
-
-#violin plot
-
-sns.violinplot(x="Profit",data=df)
-sns.violinplot(x="Discount",y="Ship Mode",data=df)
-sns.violinplot(x="Quantity",y="Ship Mode",data=df)
-
-Point plot :
-
-sns.pointplot(x=df["Quantity"],y=df["Discount"])
-sns.pointplot(x=df["Quantity"],y=df["Category"])
-sns.pointplot(x=df["Sales"],y=df["Sub-Category"])
-
-Pie Chart :
-
-df.groupby(['Category']).sum().plot(kind='pie', y='Discount',figsize=(6,10),pctdistance=1.7,labeldistance=1.2)
-df.groupby(['Sub-Category']).sum().plot(kind='pie', y='Sales',figsize=(10,10),pctdistance=1.7,labeldistance=1.2)
-df.groupby(['Region']).sum().plot(kind='pie', y='Profit',figsize=(6,9),pctdistance=1.7,labeldistance=1.2)
-df.groupby(['Ship Mode']).sum().plot(kind='pie', y='Quantity',figsize=(8,11),pctdistance=1.7,labeldistance=1.2)
-
-df1=df.groupby(by=["Category"]).sum()
-labels=[]
-for i in df1.index:
-    labels.append(i)  
-plt.figure(figsize=(8,8))
-colors = sns.color_palette('pastel')
-plt.pie(df1["Profit"],colors = colors,labels=labels, autopct = '%0.0f%%')
-plt.show()
-
-df1=df.groupby(by=["Ship Mode"]).sum()
-labels=[]
-for i in df1.index:
-    labels.append(i)
-colors=sns.color_palette("bright")
-plt.pie(df1["Sales"],labels=labels,autopct="%0.0f%%")
-plt.show()
-#HeatMap
-df4=df.copy()
-
-## encoding :
-from sklearn.preprocessing import LabelEncoder,OrdinalEncoder,OneHotEncoder
-le=LabelEncoder()
-ohe=OneHotEncoder
-oe=OrdinalEncoder()
-
-df4["Ship Mode"]=oe.fit_transform(df[["Ship Mode"]])
-df4["Segment"]=oe.fit_transform(df[["Segment"]])
-df4["City"]=le.fit_transform(df[["City"]])
-df4["State"]=le.fit_transform(df[["State"]])
-df4['Region'] = oe.fit_transform(df[['Region']])
-df4["Category"]=oe.fit_transform(df[["Category"]])
-df4["Sub-Category"]=le.fit_transform(df[["Sub-Category"]])
-
-Scaling :
-from sklearn.preprocessing import RobustScaler
-sc=RobustScaler()
-df5=pd.DataFrame(sc.fit_transform(df4),columns=['Ship Mode', 'Segment', 'City', 'State','Region',
-                                               'Category','Sub-Category','Sales','Quantity','Discount','Profit'])
-
-Heatmap :
-plt.subplots(figsize=(12,7))
-sns.heatmap(df5.corr(),cmap="PuBu",annot=True)
-plt.show()
-
+```
+## How does the distribution of total bill amounts vary across different time periods (lunch vs. dinner)?
+```
+sns.violinplot(x='time',y='total_bill',data=tips)
+plt.title("Distribution of total bill amounts vary across different time periods(lunch vs. dinner)")
+```
+## Which dining party size group tends to have the highest average total bill amount?
+```
+sns.barplot(x='size',y='total_bill',data=tips)
+plt.title("Highest average total bill amount based party size")
+```
+## What is the distribution of tip amounts for each day of the week?
+```
+sns.boxplot(x='day',y='total_bill',data=tips)
+plt.title("Distribution of tip amounts for each day of the week")
+```
+## How does the tip amount vary based on the type of service (lunch vs. dinner)?
+```
+sns.violinplot(x='time',y='tip',data=tips)
+plt.title("Tip based on the type of service ")
+```
+## Is there any correlation between the total bill amount and the tip amount?
+```
+sns.scatterplot(data=tips, x='total_bill', y='tip')
+correlation_coefficient = tips['total_bill'].corr(tips['tip'])
+print("Correlation Coefficient:", correlation_coefficient)
+heatmap
+tips.corr()
+plt.subplots(figsize=(7,5))
+sns.heatmap(tips.corr(),annot=True)
 ```
 
 # OUTPUT:
+## Initial Dataset:
+
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/679e1029-799a-4039-9254-f0554aad0d18)
 
 
+## tips.head():
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/a1c1f8e3-5371-4440-a3f6-3580fb48659f)
 
 
+## tips.info():
+
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/ff924e0c-16e6-4b3b-8fb9-e45e30ea039b)
 
 
+## Bar Plot:
+
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/77a7c595-d890-4fde-8180-f73c33662d51)
 
 
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/5fd803e3-d5fe-45cc-be19-1c4b504c71d0)
+
+## Box Plot:
+
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/169412cf-3ba5-4aed-ace7-06a3c4192f16)
+
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/b241040e-3bf6-4484-9cc6-58c25532f261)
+
+## Plot:
+
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/9e1b8f3b-c95f-4f90-bdf0-18a39b5f355e)
+
+## Violin Plot:
+
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/dd8131af-beb7-4782-b295-8fce0bf1d78e)
+
+## Bar Plot:
+
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/494a1304-b36e-4c9e-8635-e8b866fac498)
+
+## Box Plot:
+
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/3aff214d-a7c1-4737-bd1e-ab6c92dc60d4)
 
 
+## Violin Plot:
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/5eaaecaf-ad1f-42e1-96e3-3c83ce780ad4)
+
+## Scatter Plot:
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/cfc13659-3df3-4be0-a2a4-968a0c484c5b)
+
+## Heatmap:
+![image](https://github.com/Pavithraramasaamy/ODD2023-Datascience-Ex-09/assets/118596964/33390603-f3cf-4eba-ab14-ed0ad26673dc)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+## RESULT:
+Hence,Data Visualization is applied on the complex dataset using libraries like Seaborn and Matplotlib successfully based on tips dataset and the data is saved to file
 
 
 
